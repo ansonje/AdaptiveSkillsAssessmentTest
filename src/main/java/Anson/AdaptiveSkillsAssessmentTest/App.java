@@ -403,7 +403,7 @@ public class App {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setType(Type.UTILITY);
+		frame.setType(Type.NORMAL);
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(App.class.getResource("/resources/skills-svgrepo-com.png")));
 		frame.setTitle("Adaptive Skills Assessment Test");
 		frame.setBounds(100, 100, 1600, 900);
