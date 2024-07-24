@@ -52,7 +52,7 @@ public class App {
 	}
 	
 	// CHAT-GPT
-	private String apiKey = System.getenv("OPENAI_API_KEY");
+	private String apiKey = "";
 	
 	// COMPONENTS
 	private JLabel lblQuestionInfo;
@@ -93,6 +93,8 @@ public class App {
 			return;
 		}
 		sectOne = new String[sections[0]];
+		
+		apiKey = JOptionPane.showInputDialog("INSERT API-KEY HERE");
 	}
 	
 	// VARIABLES
@@ -149,8 +151,8 @@ public class App {
 		if (sectionNum != 0) {
 			nextQuestion = GPTCreateNextQuestion(); 
 		} else {
-			nextQuestion = sectOne[questionNum-1];
 			GPTAnalyzeAnswer();
+			nextQuestion = sectOne[questionNum-1];
 		} 			
 		
 		// saving current stats
@@ -317,8 +319,18 @@ public class App {
 		
 		GPTResponse response = AskGPT(roles, messages);
 		
+		// checks to see if the user gave us a working api key.
+		try {
+			System.out.println("Analyze answer content: " + response.GetContent());
+			} catch (NullPointerException e) {
+				JOptionPane.showMessageDialog(null, "Hmmm, it seems like you didn't input a working API-key, let's try that again", "Hmmm...🤔", JOptionPane.PLAIN_MESSAGE);
+				apiKey = JOptionPane.showInputDialog("INSERT API-KEY HERE");
+				questionNum = 1;
+				sectionNum = 0;
+				return;
+			}
+		
 		// update skills assessment
-		System.out.println("Analyze answer content: " + response.GetContent());
 		int index = 0;
 		String score = "";
 		for (int i = 0; i < response.GetContent().length(); i++) {
